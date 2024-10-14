@@ -8,8 +8,10 @@
 MultipleLoggersThread::MultipleLoggersThread(std::string thread_name, cactus_rt::CyclicThreadConfig thread_config, std::string extra_logger_name, std::string csv_data_filename, size_t max_iterations)
     : CyclicThread(thread_name, thread_config),
       max_iterations_(max_iterations),
-      extra_logger_(cactus_rt::logging::Frontend::get_logger(extra_logger_name)),
-      csv_writer_(csv_data_filename) {
+      extra_logger_(cactus_rt::logging::Frontend::get_logger(extra_logger_name))
+// TODO: The CSV writer has a breaking bug in Quill which will be fixed in 7.4.0 (https://github.com/odygrd/quill/issues/609). It cannot be used with a custom for now, so it is disabled.
+// , csv_writer_(csv_data_filename)
+{
   if (this->ExtraLogger() == nullptr) {
     LOG_ERROR(this->Logger(), "Could not get logger with name \"{}\"", extra_logger_name);
     // TODO: throw error?
@@ -22,7 +24,8 @@ MultipleLoggersThread::~MultipleLoggersThread() {
   if (quill::Backend::is_running()) {
     // Blocks until all messages up to the current timestamp are flushed on the
     // csv writer, to ensure every data point is logged.
-    this->csv_writer_.flush();
+    // TODO: The CSV writer has a breaking bug in Quill which will be fixed in 7.4.0 (https://github.com/odygrd/quill/issues/609). It cannot be used with a custom for now, so it is disabled.
+    // this->csv_writer_.flush();
 
     // Blocks until all messages up to the current timestamp are flushed on the
     // extra logger, to ensure every message is logged.
@@ -46,7 +49,8 @@ cactus_rt::CyclicThread::LoopControl MultipleLoggersThread::Loop(int64_t elapsed
   // LOGJ_INFO(this->ExtraLogger(), "", iterations_, data_status, data);
 
   // Use the data logger to write data to the output file
-  this->csv_writer_.append_row(iterations_, elapsed_s, data);
+  // TODO: The CSV writer has a breaking bug in Quill which will be fixed in 7.4.0 (https://github.com/odygrd/quill/issues/609). It cannot be used with a custom for now, so it is disabled.
+  // this->csv_writer_.append_row(iterations_, elapsed_s, data);
 
   ++iterations_;
   return iterations_ >= max_iterations_ ? LoopControl::Stop : LoopControl::Continue;

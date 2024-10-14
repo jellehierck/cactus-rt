@@ -36,8 +36,7 @@ class MultipleLoggersThread : public cactus_rt::CyclicThread {
   cactus_rt::logging::Logger* extra_logger_;
 
   // !! Make sure to use cactus_rt::logging::FrontendOptions and not the default quill::FrontendOptions !!
-  // TODO: There seems to be a bug where passing in custom FrontendOptions are not supported (https://github.com/odygrd/quill/issues/609), so temporarily the default are passed instead (but they should not be)
-  quill::CsvWriter<MyCsvSchema, quill::FrontendOptions> csv_writer_;
+  // TODO: The CSV writer has a breaking bug in Quill which will be fixed in 7.4.0 (https://github.com/odygrd/quill/issues/609). It cannot be used with a custom for now, so it is disabled.
   // quill::CsvWriter<MyCsvSchema, cactus_rt::logging::FrontendOptions> csv_writer_;
 };
 
