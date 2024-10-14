@@ -16,8 +16,7 @@ quill::BackendOptions cactus_rt::logging::DefaultBackendOptions() {
 
   // Disable strict timestamp order by setting the grace period to 0 - this will be faster, but logs may appear out of order
   // See quill::BackendOptions documentation for more info
-  // TODO: There is a bug in quill where setting the grace period to 0 causes assertion error in Debug builds. This is fixed in 7.4.0 (https://github.com/odygrd/quill/issues/605)
-  default_backend_options.log_timestamp_ordering_grace_period = std::chrono::milliseconds(1);
+  default_backend_options.log_timestamp_ordering_grace_period = std::chrono::milliseconds(0);
 
   return default_backend_options;
 }
